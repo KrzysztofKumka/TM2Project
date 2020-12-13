@@ -1,6 +1,6 @@
-# TM2Project
-Project in C for TM2 laboratories.
+# Projekt TM2
+## Sekwencer muzyczny
+### Opis projektu:
+Celem projektu jest wykonanie podstawowego sekwencera muzycznego. Za pomocą zewnętrznych przycisków na klawiaturze matrycowej wybieramy przypisane sample dźwiękowe, które będą odtwarzane za pomocą modułu głośnika. Dodatkowo parametry dźwiękowe sampli będą regulowane potencjometrami oraz sliderem.
 
-Authors:
-Sławomir Potoczek
-Krzysztof Kumka
+#### Autorzy: Kumka Krzysztof, Potoczek Sławomir
