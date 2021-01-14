@@ -38,4 +38,6 @@
 # include "MKL05Z4.h"                        /* header with CMSIS */
 #endif /* FRDM_KL05Z */
 
+typedef enum { false, true } bool;
+
 #endif /* FRDM_BSP_H */

@@ -2,7 +2,7 @@
 #include "tpm_pcm.h"
 #include "pmusic.h"
 
-#define UPSAMPLING 10
+#define UPSAMPLING 4
 
 void TPM0_IRQHandler(void);
 
@@ -12,20 +12,10 @@ static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
 static uint8_t  playFlag = 1;
 
-int but_1_press = 0;
-int but_2_press = 0;
-int but_3_press = 0;
+static int i = 0;
 
-void set_but_1(int but) {
-	but_1_press = but;
-}
-
-void set_but_2(int but) {
-	but_2_press = but;
-}
-
-void set_but_3(int but) {
-	but_3_press = but;
+void delay(unsigned char d){
+	for(volatile int i=0; i<(5000*d); i++);
 }
 
 void TPM0_Init_PCM(void) {
@@ -39,7 +29,7 @@ void TPM0_Init_PCM(void) {
 	TPM0->SC |= TPM_SC_PS(2);  					  // 41,9MHz / 4 ~ 10,48MHz
 	TPM0->SC |= TPM_SC_CMOD(1);					  // internal input clock source
 
-	TPM0->MOD = 255; 										  // 8bit PCM
+	TPM0->MOD = 765; 										  // 8bit PCM 
 																				// 10,48MHz / 256 ~ 40,96kHz
 	
 // "Edge-aligned PWM true pulses" mode -> PCM output
@@ -70,36 +60,16 @@ void TPM0_PCM_Play(void) {
 
 void TPM0_IRQHandler(void) {
 	
-	if (playFlag * but_1_press == 1) {
-			if (upSampleCNT == 0) TPM0->CONTROLS[2].CnV = kick[sampleCNT++]; // load new sample
-			if (sampleCNT > SAMPLES_kick) {
-				playFlag = 0;         // stop if at the end
-				but_1_press = 0;
-				TPM0->CONTROLS[2].CnV = 0;
-			}
-			// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
-			if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-	
-	if (playFlag * but_2_press == 1) {
-		if (upSampleCNT == 0) TPM0->CONTROLS[2].CnV = clap[sampleCNT++]; // load new sample
-		if (sampleCNT > SAMPLES_clap) {
-			playFlag = 0;         // stop if at the end
-			but_2_press = 0;
+	if (playFlag) {
+		if (upSampleCNT == 0) TPM0->CONTROLS[2].CnV = music[0][i][sampleCNT++] + music[1][i][sampleCNT++] + music[2][i][sampleCNT++]; // load new sample
+		if (i == 16 ) i = 0;
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			i++;         // stop if at the end
 			TPM0->CONTROLS[2].CnV = 0;
 		}
 		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
 		
-	if (playFlag * but_3_press == 1) {
-		if (upSampleCNT == 0) TPM0->CONTROLS[2].CnV = snare[sampleCNT++]; // load new sample
-		if (sampleCNT > SAMPLES_snare) {
-			playFlag = 0;         // stop if at the end
-			but_3_press = 0;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
 		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
 	}
 	

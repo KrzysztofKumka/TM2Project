@@ -2,6 +2,7 @@
 #include "MKL05Z4.h"                    /* Device header */
 #include "buttons.h"
 #include "fsm.h"
+#include "pmusic.h"
 
 /* Buttons connected to port B */
 typedef enum{ BUT1 = 1, BUT2 = 2, BUT3 = 3 } ButtonType;
@@ -16,19 +17,19 @@ static const IRQn_Type myPORT_IRQn = PORTB_IRQn;
 void PORTB_IRQHandler(void) {
 
 	if( PORTB->ISFR & (1 << BUT1) ){	/* Check in ISFR register if button BUT1 is pressed */
-		but1_clicked();
+		TPM0_PCM_Play();
     while((FPTB->PDIR&(1<<BUT1))==0);
 		PORTB->PCR[BUT1] |= PORT_PCR_ISF_MASK;
   }
 	
 	if( PORTB->ISFR & (1 << BUT2) ){	/* Check in ISFR register if button BUT2 is pressed */
-		but2_clicked();
+		
     while((FPTB->PDIR&(1<<BUT2))==0);
 		PORTB->PCR[BUT2] |= PORT_PCR_ISF_MASK;
 	}
 		
 	if( PORTB->ISFR & (1 << BUT3) ){ /* Check in ISFR register if button BUT3 is pressed */
-		but3_clicked();
+		
     while((FPTB->PDIR&(1<<BUT3))==0);
 		PORTB->PCR[BUT3] |= PORT_PCR_ISF_MASK;
   }

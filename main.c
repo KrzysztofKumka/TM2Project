@@ -8,10 +8,11 @@
 int main(void) {
 	fsmInitialize(); /* Initialize LEDs */
 	buttonsInitialize(); /* Initialize buttons */
+	musicInit();
 	
 	TPM0_Init_PCM();
 		
 	while(1){	
-	 __wfi(); // Save energy and wait for interrupt
+		__WFI();																/*Wait for new data*/
 	}
 }

@@ -43,18 +43,3 @@ void fsmInitialize() {
 	led_delay();
 	
 }
-
-void but1_clicked(void) {
-	set_but_1(1);
-	TPM0_PCM_Play();
-}
-
-void but2_clicked(void) {
-	set_but_2(1);
-	TPM0_PCM_Play();
-}
-
-void but3_clicked(void) {
-	set_but_3(1);
-	TPM0_PCM_Play();
-}
