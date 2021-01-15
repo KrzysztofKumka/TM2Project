@@ -6,7 +6,7 @@ void musicInit(void) {
 	for(int i = 0; i < 3; i++) {
 		for(int j = 0; j < 16; j++) {
 			
-				music[i][j] = silence;
+				music[i][j] = kick;
 		}
 	}
 }

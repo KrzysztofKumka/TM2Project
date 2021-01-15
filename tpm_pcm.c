@@ -61,9 +61,13 @@ void TPM0_PCM_Play(void) {
 void TPM0_IRQHandler(void) {
 	
 	if (playFlag) {
-		if (upSampleCNT == 0) TPM0->CONTROLS[2].CnV = music[0][i][sampleCNT++] + music[1][i][sampleCNT++] + music[2][i][sampleCNT++]; // load new sample
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			volatile uint8_t xyz = music[0][i][sampleCNT] + music[1][i][sampleCNT] + music[2][i][sampleCNT];
+			TPM0->CONTROLS[2].CnV = xyz; // load new sample
+		}
 		if (i == 16 ) i = 0;
-		if (sampleCNT > 500) {
+		if (sampleCNT > 499) {
 			sampleCNT = 0;
 			i++;         // stop if at the end
 			TPM0->CONTROLS[2].CnV = 0;
