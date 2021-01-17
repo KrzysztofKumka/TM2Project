@@ -8,7 +8,8 @@
 int main(void) {
 	fsmInitialize(); /* Initialize LEDs */
 	buttonsInitialize(); /* Initialize buttons */
-	musicInit();
+	//musicInit();
+	timeInit();
 	
 	TPM0_Init_PCM();
 		

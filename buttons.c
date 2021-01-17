@@ -17,19 +17,19 @@ static const IRQn_Type myPORT_IRQn = PORTB_IRQn;
 void PORTB_IRQHandler(void) {
 
 	if( PORTB->ISFR & (1 << BUT1) ){	/* Check in ISFR register if button BUT1 is pressed */
-		TPM0_PCM_Play();
+		whatToPlay[0] = 1;
     while((FPTB->PDIR&(1<<BUT1))==0);
 		PORTB->PCR[BUT1] |= PORT_PCR_ISF_MASK;
   }
 	
 	if( PORTB->ISFR & (1 << BUT2) ){	/* Check in ISFR register if button BUT2 is pressed */
-		
+		whatToPlay[1] = 1;
     while((FPTB->PDIR&(1<<BUT2))==0);
 		PORTB->PCR[BUT2] |= PORT_PCR_ISF_MASK;
 	}
 		
 	if( PORTB->ISFR & (1 << BUT3) ){ /* Check in ISFR register if button BUT3 is pressed */
-		
+		whatToPlay[2] = 1;
     while((FPTB->PDIR&(1<<BUT3))==0);
 		PORTB->PCR[BUT3] |= PORT_PCR_ISF_MASK;
   }
@@ -63,6 +63,5 @@ void buttonsInitialize(void){
 	NVIC_SetPriority (myPORT_IRQn, 3);			/* Set PORT_B interrupt priority level  */ 
 
 }
-
 
 

@@ -2,7 +2,8 @@
 #include "tpm_pcm.h"
 #include "pmusic.h"
 
-#define UPSAMPLING 4
+// 3
+#define UPSAMPLING 10  
 
 void TPM0_IRQHandler(void);
 
@@ -12,11 +13,9 @@ static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
 static uint8_t  playFlag = 1;
 
-static int i = 0;
+static uint8_t x = 0;
 
-void delay(unsigned char d){
-	for(volatile int i=0; i<(5000*d); i++);
-}
+static int choose = 0;
 
 void TPM0_Init_PCM(void) {
 		
@@ -29,8 +28,8 @@ void TPM0_Init_PCM(void) {
 	TPM0->SC |= TPM_SC_PS(2);  					  // 41,9MHz / 4 ~ 10,48MHz
 	TPM0->SC |= TPM_SC_CMOD(1);					  // internal input clock source
 
-	TPM0->MOD = 765; 										  // 8bit PCM 
-																				// 10,48MHz / 256 ~ 40,96kHz
+	TPM0->MOD = 255; 										  // 8bit PCM - docelowo 765??
+																				// 10,48MHz / 765 ~ 13.699 kHz
 	
 // "Edge-aligned PWM true pulses" mode -> PCM output
 	TPM0->SC &= ~TPM_SC_CPWMS_MASK; 		
@@ -60,20 +59,118 @@ void TPM0_PCM_Play(void) {
 
 void TPM0_IRQHandler(void) {
 	
+	/*
+	if (playFlag) {
+		if (upSampleCNT == 0) {
+			sampleCNT++; 
+			TPM0->CONTROLS[2].CnV = music[time][sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			time++;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		if (time == 4 ) time = 0;
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+	*/
+	
+	/*
 	if (playFlag) {
 		if (upSampleCNT == 0) {
 			sampleCNT++;
-			volatile uint8_t xyz = music[0][i][sampleCNT] + music[1][i][sampleCNT] + music[2][i][sampleCNT];
-			TPM0->CONTROLS[2].CnV = xyz; // load new sample
+			TPM0->CONTROLS[2].CnV = music[time][sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
 		}
-		if (i == 16 ) i = 0;
-		if (sampleCNT > 499) {
+		if (sampleCNT > 500) {
 			sampleCNT = 0;
-			i++;         // stop if at the end
 			TPM0->CONTROLS[2].CnV = 0;
 		}
-		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
 		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+	*/
+	
+	/*
+	if (playFlag) {
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			x = 0;
+			for (int i = 0; i < 3; i++) {
+				if(whatToPlay[i]) x += samples[i][sampleCNT];
+			}
+			TPM0->CONTROLS[2].CnV = x;  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			for (int i = 0; i < 3; i++) whatToPlay[i] = 0;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+	*/
+	
+	if (playFlag && choose == 0) {
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			TPM0->CONTROLS[2].CnV = time1[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			choose = 1;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+		
+	if (playFlag && choose == 1) {
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			choose = 2;
+			TPM0->CONTROLS[2].CnV = time2[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+		
+	if (playFlag && choose == 2) {
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			TPM0->CONTROLS[2].CnV = time3[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			choose = 3;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
+		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+	}
+		
+	if (playFlag && choose == 3) {
+		if (upSampleCNT == 0) {
+			sampleCNT++;
+			TPM0->CONTROLS[2].CnV = time4[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+		}
+		if (sampleCNT > 500) {
+			sampleCNT = 0;
+			choose = 0;
+			TPM0->CONTROLS[2].CnV = 0;
+		}
+		
+		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
 		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
 	}
 	
