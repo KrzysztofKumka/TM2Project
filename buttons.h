@@ -5,5 +5,10 @@
 void buttonsInitialize(void);
 void buttonsService(void);							//buttons' interrupt service procedure
 
-#endif
+void delay_ms(int n);
 
+void buttonsInit(void);
+int buttonsGet(void);
+int getButtonNumber(void);
+
+#endif

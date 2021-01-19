@@ -13,10 +13,6 @@ static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
 static uint8_t  playFlag = 1;
 
-static uint8_t x = 0;
-
-static int choose = 0;
-
 void TPM0_Init_PCM(void) {
 		
   SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;		
@@ -59,114 +55,13 @@ void TPM0_PCM_Play(void) {
 
 void TPM0_IRQHandler(void) {
 	
-	/*
-	if (playFlag) {
-		if (upSampleCNT == 0) {
-			sampleCNT++; 
-			TPM0->CONTROLS[2].CnV = music[time][sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			time++;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		if (time == 4 ) time = 0;
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-	*/
-	
-	/*
 	if (playFlag) {
 		if (upSampleCNT == 0) {
 			sampleCNT++;
-			TPM0->CONTROLS[2].CnV = music[time][sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
+			TPM0->CONTROLS[2].CnV = getMusic(0, sampleCNT);
 		}
 		if (sampleCNT > 500) {
 			sampleCNT = 0;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-	*/
-	
-	/*
-	if (playFlag) {
-		if (upSampleCNT == 0) {
-			sampleCNT++;
-			x = 0;
-			for (int i = 0; i < 3; i++) {
-				if(whatToPlay[i]) x += samples[i][sampleCNT];
-			}
-			TPM0->CONTROLS[2].CnV = x;  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			for (int i = 0; i < 3; i++) whatToPlay[i] = 0;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-	*/
-	
-	if (playFlag && choose == 0) {
-		if (upSampleCNT == 0) {
-			sampleCNT++;
-			TPM0->CONTROLS[2].CnV = time1[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			choose = 1;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-		
-	if (playFlag && choose == 1) {
-		if (upSampleCNT == 0) {
-			sampleCNT++;
-			choose = 2;
-			TPM0->CONTROLS[2].CnV = time2[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-		
-	if (playFlag && choose == 2) {
-		if (upSampleCNT == 0) {
-			sampleCNT++;
-			TPM0->CONTROLS[2].CnV = time3[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			choose = 3;
-			TPM0->CONTROLS[2].CnV = 0;
-		}
-		
-		// 13.699 / 3 ~ 4,566kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
-	}
-		
-	if (playFlag && choose == 3) {
-		if (upSampleCNT == 0) {
-			sampleCNT++;
-			TPM0->CONTROLS[2].CnV = time4[sampleCNT];  // przesunac 2 bity wstecz i podzielic przez 3
-		}
-		if (sampleCNT > 500) {
-			sampleCNT = 0;
-			choose = 0;
 			TPM0->CONTROLS[2].CnV = 0;
 		}
 		
