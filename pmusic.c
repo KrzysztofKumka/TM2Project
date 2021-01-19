@@ -12,7 +12,7 @@ void musicInit(void) {
 	volatile int j;
 	for(i = 0; i < 4; i++) {
 		for(j = 0; j < 500; j++) {
-			music[i][j] = kick[j];
+			music[i][j] = j+i;
 		}
 	}
 }

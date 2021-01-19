@@ -1,8 +1,6 @@
 
 #include "MKL05Z4.h"                    /* Device header */
-#include "buttons.h"
-#include "fsm.h"
-#include "pmusic.h"
+#include "buttons.h" 
 
 #define COL 4
 #define ROW 4

@@ -11,9 +11,9 @@ int main(void) {
 	musicInit();
 	buttonsInitialize(); /* Initialize buttons */
 
-	TPM0_Init_PCM();
+	//TPM0_Init_PCM();
 		
 	while(1){	
-		__WFI();																/*Wait for new data*/
+		//__WFI();																/*Wait for new data*/
 	}
 }

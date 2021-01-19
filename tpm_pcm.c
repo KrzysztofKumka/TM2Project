@@ -1,6 +1,5 @@
 
 #include "tpm_pcm.h"
-#include "pmusic.h"
 
 // 3
 #define UPSAMPLING 10  
@@ -52,7 +51,7 @@ void TPM0_PCM_Play(void) {
 	sampleCNT = 0;   /* start from the beginning */
 	playFlag = 1;
 }
-
+/*
 void TPM0_IRQHandler(void) {
 	
 	if (playFlag) {
@@ -71,3 +70,4 @@ void TPM0_IRQHandler(void) {
 	
 	TPM0->CONTROLS[0].CnSC |= TPM_CnSC_CHF_MASK; 
 }
+*/

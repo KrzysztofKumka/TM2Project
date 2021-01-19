@@ -1,8 +1,7 @@
 
 #include "MKL05Z4.h"                    //Device header
 #include "fsm.h"												//Declarations
-#include "tpm_pcm.h"
-#include "pmusic.h"
+
 
 typedef enum{ RED = 8, GREEN = 9, BLUE = 10 } LedType; // Define LED position in Port B 
 typedef enum{ ON = 1, OFF = 0 } LedStateType;
