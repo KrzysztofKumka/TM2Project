@@ -1,16 +1,3 @@
-/******************************************************************************
- * This file is a part of the SM2 Tutorial (C).                               *
- *                                                                            *
- * Adding extra defs makes life easy :)                                       *
- ******************************************************************************/
-
-/**
- * @file frdm_bsp.h
- * @author Koryciak
- * @date Oct 2019
- * @brief File containing info about evaluation board used in project.
- * @ver 0.1
- */
 
 #ifndef FRDM_BSP_H
 #define FRDM_BSP_H
@@ -37,7 +24,5 @@
 #ifdef FRDM_KL05Z
 # include "MKL05Z4.h"                        /* header with CMSIS */
 #endif /* FRDM_KL05Z */
-
-typedef enum { false, true } bool;
 
 #endif /* FRDM_BSP_H */

@@ -1,21 +1,24 @@
 
-#include "MKL05Z4.h"                    	/* Device header */
-#include "fsm.h"													/* Leds functions */
-#include "buttons.h"											/* Buttons of external keyboard */
-#include "tpm_pcm.h"											/* External speaker handling */
+#include "frdm_bsp.h"
 #include "pmusic.h"
-#include "tsi.h"
+#include "buttons.h"
+#include "tpm_pcm.h"
+#include "pit.h"
+//#include "tsi.h"
 
-
-int main(void) {
-	fsmInitialize(); /* Initialize LEDs */
-	//musicInit();
-	buttonsInitialize(); /* Initialize buttons */
-	TSI_Init();
+int main (void) { 
 	
-	//TPM0_Init_PCM();
+	musicInit();  // initialize music array
+	
+	buttonsInit();  // initialize buttons
+	
+	TPM0_Init();  // initialize TPM0 interrupts
+	
+  PIT_Init();  // initialize PIT interrupts
+	
+  while(1) {
+
+		__WFI();															/* sleep & wait for interrupt */
 		
-	while(1){	
-		__WFI();																/*Wait for new data*/
 	}
 }
