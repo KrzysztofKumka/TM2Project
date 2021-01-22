@@ -7,6 +7,7 @@ static int add = 0;
 
 static int time = 0;
 
+
 void musicInit(void) {
 	volatile int i;
 	volatile int j;
