@@ -14,7 +14,7 @@ int main (void) {
 	
 	TPM0_Init();  // initialize TPM0 interrupts
 	
-  PIT_Init();  // initialize PIT interrupts
+  //PIT_Init();  // initialize PIT interrupts
 	
   while(1) {
 

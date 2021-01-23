@@ -1,50 +1,62 @@
 
 #include "pmusic.h"
 
-static uint8_t music[7][500];
+#define SIZE 32
 
-static uint8_t added[7];
+static int music[SIZE];
+
+static uint8_t musicTime = 0;
 
 void musicInit(void) {  // initalization of music array
+	/*
 	volatile int i;
-	volatile int j;
-	for (i = 0; i < 7; i++) {
-		added[i] = 0;
-		for(j = 0; j < 500; j++) {
-			music[i][j] = 0;
-			
-			/* for testing purposes
-			if (i == 0) music[i][j] = 0;
-			if (i == 1) music[i][j] = 0;
-			if (i == 2) music[i][j] = 0;
-			if (i == 3) music[i][j] = 0;
-			if (i == 4) music[i][j] = 0;
-			if (i == 5) music[i][j] = 0;
-			if (i == 6) music[i][j] = 0;
-			*/
-		}
+	for (i = 0; i < 32; i++) {
+			music[i] = 0;
 	}
+	*/
+	volatile int i;
+	music[0] = 1;
+	music[1] = 0;
+	music[2] = 0;
+	music[3] = 5;
+	music[4] = 0;
+	music[5] = 0;
+	music[6] = 7;
+	music[7] = 0;
+	music[8] = 0;
+	music[9] = 12;
+	music[10] = 0;
+	music[11] = 12;
+	for (i = 12; i < SIZE; i++) {
+		music[i] = 0;
+	}
+	
+	
 }
 
-uint8_t getMusic(int a, int b) {  // getter for music array
-	return music[a][b];
+int getMusic(int a) {  // getter for music array
+	return music[a];
 }
 
-void musicAddSample(const uint8_t sample[500], uint8_t sampleTime) {  // sample adder
-	volatile int j;
-	for (j = 0; j < 500; j++) {
-		music[sampleTime][j] = ((music[sampleTime][j] * added[sampleTime]) + sample[j]) / (added[sampleTime] + 1);  // adding new sample and normalization
-	}
-	added[sampleTime]++;
+void musicAddSample(uint8_t sampleTime, int sampleNum) {  // sample adder
+	music[sampleTime] = sampleNum;
 }
 
 void musicReset(void) {  // reset music array
 	volatile int i;
-	volatile int j;
-	for (i = 0; i < 7; i++) {
-		added[i] = 0;
-		for (j = 0; j < 500; j++) {
-			music[i][j] = 0;
-		}
+	for (i = 0; i < SIZE; i++) {
+			music[i] = 0;
 	}
+}
+
+uint8_t getMusicTime(void) {
+	return musicTime;
+}
+
+void incMusicTime(void) {
+	musicTime++;
+}
+
+void resetMusicTime(void) {
+	musicTime = 0;
 }

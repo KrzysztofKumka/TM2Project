@@ -2,6 +2,7 @@
 #include "tpm_pcm.h"
 
 #define UPSAMPLING 10
+#define SIZE 32
 
 void TPM0_IRQHandler(void);
 
@@ -10,9 +11,6 @@ static uint8_t tpm0Enabled = 0;
 static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
 static uint8_t  playFlag = 1;
-
-static uint8_t musicTime = 0;
-
 
 void TPM0_Init(void) {
 		
@@ -59,12 +57,75 @@ void TPM0_IRQHandler(void) {
 	if (playFlag) {
 		if (upSampleCNT == 0) {
 			sampleCNT++;
-			TPM0->CONTROLS[2].CnV = getMusic(musicTime, sampleCNT);  // load new sample
+			switch (getMusic(getMusicTime())) {
+				
+				//No MUSIC
+				case 0:
+					break;
+				
+				//KICK SAMPLES 1, 2, 3
+				case 1:
+					TPM0->CONTROLS[2].CnV = kick1[sampleCNT];
+					break;
+				case 2:
+					TPM0->CONTROLS[2].CnV = kick2[sampleCNT];
+					break;
+				case 3:
+					TPM0->CONTROLS[2].CnV = kick3[sampleCNT];
+					break;
+				
+				//CLAP SAMPLES 4, 5, 6, 7
+				case 4:
+					TPM0->CONTROLS[2].CnV = clap1[sampleCNT];
+					break;
+				case 5:
+					TPM0->CONTROLS[2].CnV = clap2[sampleCNT];
+					break;
+				case 6:
+					TPM0->CONTROLS[2].CnV = clap3[sampleCNT];
+					break;
+				case 7:
+					TPM0->CONTROLS[2].CnV = clap4[sampleCNT];
+					break;
+				
+				//CYMBALS & HATS  SAMPLES 8, 9, 10
+				case 8:
+					TPM0->CONTROLS[2].CnV = openHihat1[sampleCNT];
+					break;
+				case 9:
+					TPM0->CONTROLS[2].CnV = openHihat2[sampleCNT];
+					break;
+				case 10:
+					TPM0->CONTROLS[2].CnV = crash1[sampleCNT];  // do wywalenia
+					break;
+				
+				//TOM SAMPLES 11, 12
+				case 11:
+					TPM0->CONTROLS[2].CnV = tom1[sampleCNT];
+					break;
+				case 12:
+					TPM0->CONTROLS[2].CnV = tom2[sampleCNT];
+					break;
+				
+				// MUSICAL & FX & VOX SAMPLES 13, 14, 15, 16
+				case 13:
+					TPM0->CONTROLS[2].CnV = piano[sampleCNT];
+					break;
+				case 14:
+					TPM0->CONTROLS[2].CnV = brass[sampleCNT];
+					break;
+				case 15:
+					TPM0->CONTROLS[2].CnV = horn[sampleCNT];
+					break;
+				case 16:
+					TPM0->CONTROLS[2].CnV = boi[sampleCNT];
+					break;
+			}
 		}
 		if (sampleCNT > 500) {
 			sampleCNT = 0;  // play in loop
-			musicTime++;
-			if (musicTime > 6) musicTime = 0;
+			incMusicTime();
+			if (getMusicTime() >= SIZE) resetMusicTime();
 			TPM0->CONTROLS[2].CnV = 0;
 		}
 		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE

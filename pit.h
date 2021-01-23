@@ -4,6 +4,7 @@
 
 #include "frdm_bsp.h"
 #include "buttons.h"
+#include "tpm_pcm.h"
 
 void PIT_Init(void);
 

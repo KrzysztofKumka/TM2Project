@@ -32,6 +32,7 @@ void buttonsInit(void) { /* initialization */
 }
 
 int buttonsGet(void) {  // get single sample of clicked button
+	
 	int whichbut[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};  // array for checking which button was activated
 	int count = 0;  // variable for counting buttons that are checked
 	volatile int k;
@@ -44,6 +45,7 @@ int buttonsGet(void) {  // get single sample of clicked button
 		PTA->PCOR |= MASK(8 - k);  // activating Pin(8-k)
 		for (m = 0; m < COL; m++) {  // iterating on columns
 			whichbut[count] = (int)(PTA->PDIR & (1<<(12-m)));  // if 1 then write it to array
+			tmp = whichbut[count];  // debugger
 			count++;
 		}
 		PTA->PSOR |= MASK(8 - k); // set Pin(8 - k) to off
@@ -81,14 +83,3 @@ int getButtonNumber(void) {
 	}
 	return 0;
 }
-
-/*
-int getButtonNumber(void) {  // debouncing
-	int prev, next;
-	prev = buttonsGet();  // get 1st sample
-	delay_ms(5);  // wait for 5 ms
-	next = buttonsGet();  // get 2nd sample
-	if( next == prev) return prev;  // if both samples are the same, return it
-	else return 0;  // else return 0
-}
-*/
