@@ -5,6 +5,25 @@
 #define COL 4
 #define ROW 4
 
+/* 
+Connections
+
+Matrix Keypad:
+C4 -> PTA9
+C3 -> PTA10
+C2 -> PTA11
+C1 -> PTA12
+R1 -> PTA8
+R2 -> PTA7
+R3 -> PTA6
+R4 -> PTA5
+
+Speaker:
+GND -> GND
++5V -> 3.3V
+AUDIO_IN -> PTB7
+*/
+
 static int prevVal = 0;
 static int val;
 static int ifAddSample = 0;
