@@ -14,8 +14,9 @@ void musicInit(void) {  // initalization of music array
 			music[i] = 0;
 	}
 	*/
-	volatile int i;
-	music[0] = 1;
+	
+	//testing purposes
+	music[0] = 2;
 	music[1] = 0;
 	music[2] = 0;
 	music[3] = 5;
@@ -26,12 +27,27 @@ void musicInit(void) {  // initalization of music array
 	music[8] = 0;
 	music[9] = 12;
 	music[10] = 0;
-	music[11] = 12;
-	for (i = 12; i < SIZE; i++) {
-		music[i] = 0;
-	}
-	
-	
+	music[11] = 13;
+	music[12] = 12;
+	music[13] = 13;
+	music[14] = 0;
+	music[15] = 12;
+	music[16] = 0;
+	music[17] = 0;
+	music[18] = 5;
+	music[19] = 0;
+	music[20] = 0;
+	music[21] = 7;
+	music[22] = 0;
+	music[23] = 0;
+	music[24] = 12;
+	music[25] = 0;
+	music[26] = 13;
+	music[27] = 12;
+	music[28] = 13;
+	music[29] = 0;
+	music[30] = 12;
+	music[31] = 0;
 }
 
 int getMusic(int a) {  // getter for music array

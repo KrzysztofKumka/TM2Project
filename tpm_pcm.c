@@ -39,7 +39,7 @@ void TPM0_Init(void) {
   
 	TPM0->CONTROLS[0].CnSC |= TPM_CnSC_CHIE_MASK; // Enable interrupt
 	
-	NVIC_SetPriority(TPM0_IRQn, 2);  /* TPM0 interrupt priority level  */
+	NVIC_SetPriority(TPM0_IRQn, 1);  /* TPM0 interrupt priority level  */
 
 	NVIC_ClearPendingIRQ(TPM0_IRQn); 
 	NVIC_EnableIRQ(TPM0_IRQn);	/* Enable Interrupts */
@@ -132,5 +132,5 @@ void TPM0_IRQHandler(void) {
 		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
 	}
 	
-	TPM0->CONTROLS[0].CnSC |= TPM_CnSC_CHF_MASK; 
+	TPM0->CONTROLS[0].CnSC |= TPM_CnSC_CHF_MASK;
 }
