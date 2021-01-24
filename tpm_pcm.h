@@ -1,8 +1,10 @@
+
 #ifndef TPM_PCM_H
 #define TPM_PCM_H
 
 #include "frdm_bsp.h"
 #include "pmusic.h"
+#include "lcd1602.h"
 
 void TPM0_Init(void);
 

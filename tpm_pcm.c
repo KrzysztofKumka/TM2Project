@@ -1,3 +1,4 @@
+
 #include "tpm_pcm.h"
 
 #define UPSAMPLING 10
@@ -95,7 +96,7 @@ void TPM0_IRQHandler(void) {
 					TPM0->CONTROLS[2].CnV = openHihat2[sampleCNT];
 					break;
 				case 10:
-					TPM0->CONTROLS[2].CnV = crash1[sampleCNT];  // do wywalenia
+					TPM0->CONTROLS[2].CnV = crash1[sampleCNT];
 					break;
 				
 				//TOM SAMPLES 11, 12
@@ -123,6 +124,7 @@ void TPM0_IRQHandler(void) {
 		}
 		if (sampleCNT > 500) {
 			sampleCNT = 0;  // play in loop
+			LCD1602_whichSample(getMusicTime());
 			incMusicTime();
 			if (getMusicTime() >= SIZE) resetMusicTime();
 			TPM0->CONTROLS[2].CnV = 0;
