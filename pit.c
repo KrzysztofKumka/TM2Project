@@ -1,4 +1,3 @@
-
 #include "pit.h"
 
 void PIT_IRQHandler(void);
@@ -25,8 +24,12 @@ void PIT_Init(void) {
 void PIT_IRQHandler(void) {
 	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK) {
 		//ifButtonClicked();
+		uint8_t time = getMusicTime();
+		uint8_t button = (uint8_t)getButtonNumber();
 		
-		musicAddSample(getMusicTime(), getButtonNumber());
+		if(button != 0) {
+			musicAddSample(time, button);
+		}
 		
 		PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK; //clear status flag
 	}

@@ -1,4 +1,3 @@
-
 #include "MKL05Z4.h"  // Device header
 #include "buttons.h" 
 
@@ -7,7 +6,6 @@
 
 /* 
 Connections
-
 Matrix Keypad:
 C4 -> PTA9
 C3 -> PTA10
@@ -17,7 +15,6 @@ R1 -> PTA8
 R2 -> PTA7
 R3 -> PTA6
 R4 -> PTA5
-
 Speaker:
 GND -> GND
 +5V -> 3.3V

@@ -1,4 +1,3 @@
-
 #include "pmusic.h"
 
 #define SIZE 32
@@ -8,13 +7,12 @@ static int music[SIZE];
 static uint8_t musicTime = 0;
 
 void musicInit(void) {  // initalization of music array
-	/*
 	volatile int i;
 	for (i = 0; i < 32; i++) {
 			music[i] = 0;
 	}
-	*/
 	
+	/*
 	//testing purposes
 	music[0] = 2;
 	music[1] = 0;
@@ -48,7 +46,9 @@ void musicInit(void) {  // initalization of music array
 	music[29] = 0;
 	music[30] = 12;
 	music[31] = 0;
+	*/
 }
+
 
 int getMusic(int a) {  // getter for music array
 	return music[a];

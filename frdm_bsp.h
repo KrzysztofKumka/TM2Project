@@ -1,4 +1,3 @@
-
 #ifndef FRDM_BSP_H
 #define FRDM_BSP_H
 
