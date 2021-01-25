@@ -40,12 +40,4 @@ void LCD1602_SetCursor(uint8_t col, uint8_t row);
  */
 void LCD1602_Backlight(uint8_t state);
 
-void LCD1602_setZeroes(void);
-
-void LCD1602_WelcomeSequence(void);
-
-void LCD1602_whichSample(uint8_t time);
-
-void delay_ms(int a);
-
 #endif  /* LCD1602_H */

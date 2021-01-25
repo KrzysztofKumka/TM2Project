@@ -4,10 +4,15 @@
 
 #include "frdm_bsp.h"
 #include "pmusic.h"
-#include "lcd1602.h"
+#include "GUI.h"
+#include "ADC.h"
 
 void TPM0_Init(void);
 
+uint8_t getPlayFlag(void);
+
 void TPM0_PCM_Play(void);
+
+void TPM0_PCM_Pause(void);
 
 #endif /* TPM_PCM_H */

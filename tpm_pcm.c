@@ -2,7 +2,6 @@
 #include "tpm_pcm.h"
 
 #define UPSAMPLING 10
-#define SIZE 32
 
 void TPM0_IRQHandler(void);
 
@@ -10,7 +9,9 @@ static uint8_t tpm0Enabled = 0;
 
 static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
-static uint8_t  playFlag = 1;
+static uint8_t  playFlag = 0;
+static uint8_t time;
+static uint8_t prevTime = 0;
 
 void TPM0_Init(void) {
 		
@@ -52,12 +53,21 @@ void TPM0_PCM_Play(void) {
 	playFlag = 1;
 }
 
+void TPM0_PCM_Pause(void) {
+	playFlag = 0;
+}
+
+uint8_t getPlayFlag(void) {
+	return playFlag;
+}
+
 void TPM0_IRQHandler(void) {
 	
 	if (playFlag) {
+		time = getMusicTime();
 		if (upSampleCNT == 0) {
 			sampleCNT++;
-			switch (getMusic(getMusicTime())) {
+			switch (getMusic(time)) {
 				
 				//No MUSIC
 				case 0:
@@ -124,9 +134,10 @@ void TPM0_IRQHandler(void) {
 		}
 		if (sampleCNT > 500) {
 			sampleCNT = 0;  // play in loop
-			LCD1602_whichSample(getMusicTime());
+			GUI_whichSample(time, prevTime);
+			prevTime = time;
 			incMusicTime();
-			if (getMusicTime() >= SIZE) resetMusicTime();
+			if (getMusicTime() >= getSize()) resetMusicTime();
 			TPM0->CONTROLS[2].CnV = 0;
 		}
 		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE

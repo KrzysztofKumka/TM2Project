@@ -1,6 +1,12 @@
 
 #include "pit.h"
 
+static uint8_t menu = 1;
+static uint8_t game = 0;
+static uint8_t pause = 0;
+static uint8_t config = 0;
+static uint8_t setArr = 0;
+
 void PIT_IRQHandler(void);
 
 void PIT_Init(void) {
@@ -25,9 +31,76 @@ void PIT_Init(void) {
 void PIT_IRQHandler(void) {
 	if (PIT->CHANNEL[0].TFLG & PIT_TFLG_TIF_MASK) {
 		uint8_t button = (uint8_t)getButtonNumber();
-		uint8_t time = getMusicTime();
-		if (button != 0) {
-			musicAddSample(time, button);
+		if (menu == 1) {
+			if (button == 1) {
+				menu = 0;
+				game = 1;
+				GUI_Play();
+				TPM0_PCM_Play();
+			}
+			else if (button == 2) {
+				menu = 0;
+				config = 1;
+				GUI_Config();
+			}
+		}
+		else if (game == 1) {
+			if (button == 1) {
+				game = 0;
+				pause = 1;
+				TPM0_PCM_Pause();
+				GUI_Pause();
+			}
+			else if (button != 0){
+				uint8_t time = getMusicTime();
+				musicAddSample(time, button);
+			}
+		}
+		else if (pause == 1) {
+			if (button == 1) {
+				pause = 0;
+				game = 1;
+				GUI_Play();
+				TPM0_PCM_Play();
+			}
+			else if (button == 2) {
+				pause = 0;
+				menu = 1;
+				GUI_Menu();
+			}
+		}
+		else if (config == 1) {
+			if (button == 1) {
+				config = 0;
+				setArr = 1;
+				GUI_SetArray();
+			}
+			else if (button == 2) {
+				config = 0;
+				menu = 1;
+				GUI_Menu();
+			}
+		}
+		else if (setArr == 1) {
+			if (button == 1) {
+				setArr = 0;
+				config = 1;
+				GUI_Config();
+			}
+			else if (button == 2) {
+				uint8_t newSize = getSize();
+				if(newSize < 32) {
+					setSize(newSize + 1);
+					GUI_CHangeArraySize();
+				}
+			}
+			else if (button == 3) {
+				uint8_t newSize = getSize();
+				if(newSize > 0) {
+					setSize(newSize - 1);
+					GUI_CHangeArraySize();
+				}
+			}
 		}
 		PIT->CHANNEL[0].TFLG |= PIT_TFLG_TIF_MASK; //clear status flag
 	}

@@ -47,7 +47,7 @@ int buttonsGet(void) {  // get single sample of clicked button
 	for (k = 0; k < ROW; k++) {  // iterating on rows
 		PTA->PCOR |= MASK(8 - k);  // activating Pin(8-k)
 		for (m = 0; m < COL; m++) {  // iterating on columns
-			whichbut[count] = (int)(PTA->PDIR & (1<<(12-m)));  // if 1 then write it to array
+			whichbut[15 - count] = (int)(PTA->PDIR & (1<<(12-m)));  // if 1 then write it to array
 			count++;
 		}
 		PTA->PSOR |= MASK(8 - k); // set Pin(8 - k) to off

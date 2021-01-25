@@ -5,6 +5,8 @@
 #include "frdm_bsp.h"
 #include "buttons.h"
 #include "tpm_pcm.h"
+#include "GUI.h"
+#include "pmusic.h"
 
 void PIT_Init(void);
 
