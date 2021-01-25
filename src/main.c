@@ -1,4 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file main.c
+ * @author Kumka, Potoczek
+ * @date Dec 2020
+ * @brief File containing initialization and main loop
+ * @ver 0.1
+ */
+ 
 #include "frdm_bsp.h"
 #include "pmusic.h"
 #include "buttons.h"
@@ -8,7 +19,7 @@
 #include "GUI.h"
 
 /* 
-Connections
+~Connections~
 
 Matrix Keypad:
 C4 -> PTA9
@@ -45,16 +56,17 @@ int main (void) {
 	
 	buttonsInit();  // initialize buttons
 	
-	kal_error=ADC_Init();				// initialize and calibrate ADC
+	kal_error=ADC_Init();  // initialize and calibrate ADC
 	if(kal_error)
 	{
-		while(1);									// calibration failed
+		while(1);  // calibration failed
 	}
 	
 	LCD1602_Init();  // initialize lcd display
 	LCD1602_Backlight(TRUE);  // turn on display backlight
-	GUI_WelcomeSequence();  // display welcome sequence
-	GUI_Menu();
+	
+	GUI_WelcomeSequence();  // display welcome sequence on lcd
+	GUI_Menu();  // display menu on lcd
 	
 	TPM0_Init();  // initialize TPM0 interrupts
 	
@@ -62,7 +74,7 @@ int main (void) {
 	
   while(1) {
 
-		__WFI();															/* sleep & wait for interrupt */
+		__WFI();  // sleep & wait for interrupt
 		
 	}
 }

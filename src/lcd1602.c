@@ -1,4 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file lcd1602.c
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing definitions for lcd1602
+ * @ver 0.1
+ */
+ 
 #include "lcd1602.h"
 
 /******************************************************************************\
@@ -8,6 +19,7 @@
 #define LCD_CLEARDISPLAY 		0x01
 #define LCD_SETDDRAMADDR 		0x80
 #define LCD_FULLLINE				0x40
+
 /* PCF8574 */
 #define PCF8574_ADDRESS     0x27 	/* I2C slave device,  PCF8574A=0x3F */ 
 /* PCF8574 connections to LCD */
@@ -15,14 +27,17 @@
 //#define PCF8574_D6 0x40
 //#define PCF8574_D5 0x20
 //#define PCF8574_D4 0x10
+
 #define PCF8574_BL 0x08 /* Backlight */
 #define PCF8574_EN 0x04 /* Enable bit */
 #define PCF8574_RW 0x02 /* Read/Write bit (0 = write) */
 #define PCF8574_RS 0x01 /* Register select bit */
+
 /******************************************************************************\
 * Private memory declarations
 \******************************************************************************/
 static uint8_t lcd_backlight = 1;
+
 /******************************************************************************\
 * Private prototypes
 \******************************************************************************/
@@ -30,6 +45,7 @@ void PCF8574_Write(uint8_t data);
 void LCD1602_Write4(uint8_t data, uint8_t rs);
 void LCD1602_Write8(uint8_t data, uint8_t rs);
 uint8_t itoa(int value, char *ptr);
+
 
 void LCD1602_Init(void) {																																		
 
@@ -45,16 +61,19 @@ void LCD1602_Init(void) {
 	LCD1602_Write8(0x0C,0);					/* cursor off, blink off */
 }
 
+
 void LCD1602_SetCursor(uint8_t col, uint8_t row) {
 	
 	if (row>1) row = 1;   /* prevent from too many rows */
 	LCD1602_Write8(LCD_SETDDRAMADDR+col+(LCD_FULLLINE*row),0);
 }
 
+
 void LCD1602_ClearAll(void) {
 	
 	LCD1602_Write8(LCD_CLEARDISPLAY, 0);
 }
+
 
 void LCD1602_Print(const char *str) {
 
@@ -66,6 +85,7 @@ void LCD1602_Print(const char *str) {
   }
 }
 
+
 void LCD1602_PrintNum(int number) {
 
   char str[12];
@@ -76,11 +96,14 @@ void LCD1602_PrintNum(int number) {
 	if (size < 5) LCD1602_Print("      ");   /* change if display bigger values*/
 }
 
+
 void LCD1602_Backlight(uint8_t state) {
 	
 	lcd_backlight = state;				 /* update internal variable */
 	PCF8574_Write(0x00);
 }
+
+
 /**
  * @brief Write byte to LCD including backlight info.
  *
@@ -90,6 +113,8 @@ void PCF8574_Write(uint8_t data) {
 	
 	I2C_Write(PCF8574_ADDRESS, data | (lcd_backlight?PCF8574_BL:0x00));
 }
+
+
 /**
  * @brief Write 4 bits to LCD.
  *
@@ -102,6 +127,8 @@ void LCD1602_Write4(uint8_t data, uint8_t rs) {
 	PCF8574_Write(((data << 4)&0xF0) | (rs?PCF8574_RS:0x00));
 	DELAY(2)
 }
+
+
 /**
  * @brief Write byte to LCD.
  *
@@ -113,6 +140,8 @@ void LCD1602_Write8(uint8_t data, uint8_t rs) {
 	LCD1602_Write4(((data >> 4)&0x0F), rs);
 	LCD1602_Write4(( data      &0x0F), rs);
 }
+
+
 /**
  * @brief Convert integer to string.
  *

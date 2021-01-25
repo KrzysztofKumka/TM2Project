@@ -1,4 +1,17 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
+
+/**
+ * @file ADC.c
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing definitions for ADC
+ * @ver 0.1
+ */
+
 #include "ADC.h"
+
 
 uint8_t ADC_Init(void) {
 	
@@ -36,9 +49,11 @@ uint8_t ADC_Init(void) {
 	return(0);																	// return if succeeded
 }
 
+
 void triggerADC(void) {
 	ADC0->SC1[0] |= ADC_SC1_ADCH(4);  // trigger ADC measurement
 }
+
 
 uint8_t setSpeed(void) {
 	if((ADC0->SC1[0] & ADC_SC1_COCO_MASK) != 0) {  // if measurement ended, return value

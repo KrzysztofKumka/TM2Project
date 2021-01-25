@@ -1,5 +1,17 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file GUI.c
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing definitions for GUI
+ * @ver 0.1
+ */
+ 
 #include "GUI.h"
+
 
 void GUI_WelcomeSequence(void) {
 	LCD1602_ClearAll();
@@ -9,6 +21,7 @@ void GUI_WelcomeSequence(void) {
 	LCD1602_Print("KUMKA & POTOCZEK");	
 	delay_ms(3000);
 }
+
 
 void GUI_Countdown(void) {
 	LCD1602_SetCursor(10, 0);
@@ -23,6 +36,7 @@ void GUI_Countdown(void) {
 	GUI_setZeroes(getSize());
 }
 
+
 void GUI_Menu(void) {
 	LCD1602_ClearAll();
 	LCD1602_SetCursor(0, 0);
@@ -30,6 +44,7 @@ void GUI_Menu(void) {
 	LCD1602_SetCursor(0, 1);
 	LCD1602_Print("S1-Play   S2-Cfg");
 }
+
 
 void GUI_Play(void) {
 	LCD1602_ClearAll();
@@ -40,6 +55,7 @@ void GUI_Play(void) {
 	GUI_Countdown();
 }
 
+
 void GUI_Pause(void) {
 	LCD1602_ClearAll();
 	LCD1602_SetCursor(0, 0);
@@ -48,12 +64,14 @@ void GUI_Pause(void) {
 	LCD1602_Print("S1-Play S3-Reset");
 }
 
+
 void GUI_Reset(void) {
 	LCD1602_ClearAll();
 	LCD1602_SetCursor(0, 0);
 	LCD1602_Print("*Resetting*");
 	delay_ms(1500);
 }
+
 
 void GUI_Config(void) {
 	LCD1602_ClearAll();
@@ -62,6 +80,7 @@ void GUI_Config(void) {
 	LCD1602_SetCursor(0, 1);
 	LCD1602_Print("S1-SetArr S2-Bck");
 }
+
 
 void GUI_SetArray(void) {
 	LCD1602_ClearAll();
@@ -73,10 +92,12 @@ void GUI_SetArray(void) {
 	LCD1602_Print("S1-Bck   S2^ S3v");
 }
 
+
 void GUI_CHangeArraySize(void) {
 	LCD1602_SetCursor(12, 0);
 	LCD1602_PrintNum(getSize());
 }
+
 
 void GUI_setZeroes(uint8_t size) {
 	volatile uint8_t i;
@@ -104,6 +125,7 @@ void GUI_setZeroes(uint8_t size) {
 		}
 	}
 }
+
 
 void GUI_whichSample(uint8_t time, uint8_t prevTime) {
 	
@@ -140,6 +162,7 @@ void GUI_whichSample(uint8_t time, uint8_t prevTime) {
 		LCD1602_Print("+");
 	}
 }
+
 
 void delay_ms(int a) {
 	volatile int i;

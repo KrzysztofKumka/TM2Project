@@ -1,13 +1,31 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file buttons.c
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing definitions for buttons
+ * @ver 0.1
+ */
+ 
 #include "MKL05Z4.h"  // Device header
 #include "buttons.h" 
 
+/******************************************************************************\
+* Private definitions
+\******************************************************************************/
 #define COL 4
 #define ROW 4
 
+/******************************************************************************\
+* Private memory declarations
+\******************************************************************************/
 static int prevVal = 0;
 static int val;
 static int ifAddSample = 0;
+
 
 void buttonsInit(void) {  //initialization
 	
@@ -35,6 +53,7 @@ void buttonsInit(void) {  //initialization
 	PTA->PDDR |= MASK(5);  // set Pin 5 as output
 }
 
+
 int buttonsGet(void) {  // get single sample of clicked button
 	
 	int whichbut[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};  // array for checking which button was activated
@@ -53,33 +72,35 @@ int buttonsGet(void) {  // get single sample of clicked button
 		PTA->PSOR |= MASK(8 - k); // set Pin(8 - k) to off
 	}
 	for (n = 0; n < 16; n++) {
-		if(whichbut[n] == 0) {
-			ifOnlyOneBut += 1;
-			tmp = n + 1;
+		if(whichbut[n] == 0) {  // if button(n) == 0
+			ifOnlyOneBut += 1;  // clicked buttons counter increment
+			tmp = n + 1;  // temporary result
 		}
 	}
-	if(ifOnlyOneBut != 1) {
-		return 0;
+	if(ifOnlyOneBut != 1) {  // if more than 1 button clicked
+		return 0;  // return 0
 	}
 	else {
-		return tmp;
+		return tmp;  // return temporary result
 	}
 }
+
 
 void ifButtonClicked(void) {
 	if(ifAddSample != 1) {  // if flag not set, check which button is clicked
 		int but = buttonsGet();
 		if(val == but && val != prevVal ) {  // checking if our value did not changed and if it is different than previous value
 			prevVal = val;
-			ifAddSample = 1;
+			ifAddSample = 1;  // set the flag
 		}
 		else val = but;
 	}
 }
 
+
 int getButtonNumber(void) {
 	ifButtonClicked();  // if button clicked, set the flag
-	if(ifAddSample) {
+	if(ifAddSample) {  // if flag set, clear the flac and return value
 		ifAddSample = 0;
 		return val;
 	}

@@ -1,4 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file i2c.h
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing declarations for i2c
+ * @ver 0.1
+ */
+ 
 #ifndef I2C_H
 #define I2C_H
 

@@ -1,3 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
+
+/**
+ * @file ADC.h
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing declarations for ADC
+ * @ver 0.1
+ */
+
 #include "MKL05Z4.h"
 //----------------------------------------------
 // ADC0_CFG1

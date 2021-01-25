@@ -1,4 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file i2c.c
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing definitions for i2c
+ * @ver 0.1
+ */
+ 
 #include "i2c.h"
 
 /******************************************************************************\
@@ -6,6 +17,7 @@
 \******************************************************************************/
 #define SCL   3
 #define SDA   4
+
 /******************************************************************************\
 * Private prototypes
 \******************************************************************************/
@@ -17,11 +29,13 @@ void i2c_enable(void);
 void i2c_disable(void);
 void i2c_send(uint8_t);
 uint8_t i2c_wait(void);
+
 /******************************************************************************\
 * Private memory declarations
 \******************************************************************************/
 static uint8_t error;
 static uint16_t timeout;
+
 
 void I2C_Init(void) {
 	
@@ -37,6 +51,7 @@ void I2C_Init(void) {
 	I2C0->C1 |= I2C_C1_TX_MASK;								  /* enable transfer */
 	I2C0->C1 |= I2C_C1_TXAK_MASK;								/* enable transfer acknowledge */
 }
+
 
 uint8_t I2C_Write(uint8_t address, uint8_t data) {
 	
@@ -54,48 +69,64 @@ uint8_t I2C_Write(uint8_t address, uint8_t data) {
 	
 	return 0;
 }
+
+
 /**
  * @brief I2C master start.
  */
 void i2c_m_start(void) {
   I2C0->C1 |= I2C_C1_MST_MASK;
 }
+
+
 /**
  * @brief I2C master stop.
  */
 void i2c_m_stop(void) {
   I2C0->C1 &= ~I2C_C1_MST_MASK;
 }
+
+
 /**
  * @brief I2C master restart.
  */
 void i2c_m_rstart(void) {
   I2C0->C1 |= I2C_C1_RSTA_MASK;
 }
+
+
 /**
  * @brief I2C transmit.
  */
 void i2c_tran(void) {
   I2C0->C1 |= I2C_C1_TX_MASK;
 }
+
+
 /**
  * @brief I2C enable.
  */
 void i2c_enable(void) {
   I2C0->C1 |= I2C_C1_IICEN_MASK;
 }
+
+
 /**
  * @brief I2C disable.
  */
 void i2c_disable(void) {
   I2C0->C1 &= ~I2C_C1_IICEN_MASK;
 }
+
+
 /**
  * @brief I2C send data.
  */
 void i2c_send(uint8_t data) {
 	I2C0->D = data;
 }
+
+
 /**
  * @brief I2C wait.
  */

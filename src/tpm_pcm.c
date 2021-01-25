@@ -1,8 +1,25 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file tmp_pcm.c
+ * @author Kumka, Potoczek
+ * @date Dec 2020
+ * @brief File containing definitions for TPM
+ * @ver 0.1
+ */
+ 
 #include "tpm_pcm.h"
 
+/******************************************************************************\
+* Private prototypes
+\******************************************************************************/
 void TPM0_IRQHandler(void);
 
+/******************************************************************************\
+* Private memory declarations
+\******************************************************************************/
 static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
 static uint8_t  playFlag = 0;
@@ -10,10 +27,10 @@ static uint8_t time;
 static uint8_t prevTime = 0;
 
 static uint8_t sample;
-static uint8_t volume = 255;
 
 static uint8_t upSampling;
 static uint8_t speed;
+
 
 void TPM0_Init(void) {
 		
@@ -48,19 +65,22 @@ void TPM0_Init(void) {
 	NVIC_EnableIRQ(TPM0_IRQn);	/* Enable Interrupts */
 }
 
+
 void TPM0_PCM_Play(void) {
 	sampleCNT = 0;   /* start from the beginning */
 	playFlag = 1;
 }
 
+
 void TPM0_PCM_Pause(void) {
 	playFlag = 0;
 }
 
+
 void TPM0_IRQHandler(void) {
 	if (playFlag) {
-		speed = setSpeed();
-		triggerADC();
+		speed = setSpeed();  // check potentiometer value
+		triggerADC();  // trigger ADC measurement
 		time = getMusicTime();
 		if (upSampleCNT == 0) {
 			sampleCNT++;
@@ -133,18 +153,18 @@ void TPM0_IRQHandler(void) {
 			}
 			
 			if (sample != 0) {
-				TPM0->CONTROLS[2].CnV = (volume /  255) * sample;
+				TPM0->CONTROLS[2].CnV = sample;  // load new sample
 			}
 		}
 		if (sampleCNT > 500) {
 			sampleCNT = 0;  // play in loop
-			GUI_whichSample(time, prevTime);
+			GUI_whichSample(time, prevTime);  // display current ssample on display
 			prevTime = time;
-			incMusicTime();
-			if (getMusicTime() >= getSize()) resetMusicTime();
+			incMusicTime();  // increment music time variable
+			if (getMusicTime() >= getSize()) resetMusicTime();  // if music time varialble is greater than current music array size, reset it to 0
 			TPM0->CONTROLS[2].CnV = 0;
 		}
-		upSampling = speed/10;
+		upSampling = speed/10;  // set sampling speed
 		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
 		if (++upSampleCNT > (upSampling - 1)) upSampleCNT = 0;
 	}

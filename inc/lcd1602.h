@@ -1,4 +1,15 @@
+/******************************************************************************
+ * This file is a part of the Music Sequencer Project for SM2                 *
+ ******************************************************************************/
 
+/**
+ * @file lcd1602.h
+ * @author Kumka, Potoczek
+ * @date Jan 2021
+ * @brief File containing declarations for lcd1602
+ * @ver 0.1
+ */
+ 
 #ifndef LCD1602_H
 #define LCD1602_H
 
