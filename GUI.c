@@ -74,80 +74,62 @@ void GUI_CHangeArraySize(void) {
 void GUI_setZeroes(uint8_t size) {
 	volatile uint8_t i;
 	volatile uint8_t j;
-	volatile uint8_t rows = 0;
-	volatile uint8_t cols = 0;
+	volatile uint8_t if2rows = 0;
 	
 	LCD1602_ClearAll();
 	
-	if (size < 16) {
-		rows = 1;
-		cols = size;
-	}
-	else if (size >= 16) {
-		rows = 2;
-		cols = 16;
-	}
-	for (i = 0; i < rows; i++) {
-		if (i == 0) {
-			for (j = 0; j < cols; j++) {
-				LCD1602_SetCursor(j,i);
-				LCD1602_Print("O");
-			}
+	if (size <= 16) {
+		for (i = 0; i < size; i++) {
+			LCD1602_SetCursor(i,0);
+			LCD1602_Print("O");
 		}
-		else if (i == 1) {
-			for (j = 0; j < (size - cols); j++) {
-				LCD1602_SetCursor(j,i);
-				LCD1602_Print("O");
-			}
+	}
+	else if (size <= 32) {
+		if2rows = size - 16;
+		for (i = 0; i < 16; i++) {
+			LCD1602_SetCursor(i,0);
+			LCD1602_Print("O");
+		}
+			
+		for (j = 0; j < if2rows; j++) {
+			LCD1602_SetCursor(j,1);
+			LCD1602_Print("O");
 		}
 	}
 }
 
 void GUI_whichSample(uint8_t time, uint8_t prevTime) {
-	uint8_t row = 0;
-	if (time == 0 && prevTime < 16) {
-		LCD1602_SetCursor(prevTime,row);
-		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
-		LCD1602_Print("+");
-	}
-	else if (time == 0 && prevTime == 16) {
-		LCD1602_SetCursor(time,row+1);
-		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
-		LCD1602_Print("+");
-	}
-	else if (time == 0 && prevTime < 31) {
-		LCD1602_SetCursor(prevTime - 16,row+1);
-		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
-		LCD1602_Print("+");
-	}
-	else if (time == 0 && prevTime == 31) {
-		LCD1602_SetCursor(time + 15,row+1);
-		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
-		LCD1602_Print("+");
+	
+	if (time == 0) {
+		if (prevTime <= 15) {
+			LCD1602_SetCursor(prevTime,0);
+			LCD1602_Print("O");
+			LCD1602_SetCursor(time,0);
+			LCD1602_Print("+");
+		}
+		else if (prevTime <= 31) {
+			LCD1602_SetCursor(prevTime - 16, 1);
+			LCD1602_Print("O");
+			LCD1602_SetCursor(time,0);
+			LCD1602_Print("+");
+		}
 	}
 	else if (time < 16) {
-		LCD1602_SetCursor(time-1,row);
+		LCD1602_SetCursor(prevTime,0);
 		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
+		LCD1602_SetCursor(time,0);
 		LCD1602_Print("+");
 	}
 	else if (time == 16) {
-		row = 1;
-		LCD1602_SetCursor(time-1,row-1);
+		LCD1602_SetCursor(prevTime, 0);
 		LCD1602_Print("O");
-		LCD1602_SetCursor(time-16,row);
+		LCD1602_SetCursor(time-16, 1);
 		LCD1602_Print("+");
 	}
 	else if (time > 16) {
-		time = time - 16;
-		row = 1;
-		LCD1602_SetCursor(time-1,row);
+		LCD1602_SetCursor(prevTime - 16,1);
 		LCD1602_Print("O");
-		LCD1602_SetCursor(time,row);
+		LCD1602_SetCursor(time - 16,1);
 		LCD1602_Print("+");
 	}
 }

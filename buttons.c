@@ -67,7 +67,7 @@ int buttonsGet(void) {  // get single sample of clicked button
 }
 
 void ifButtonClicked(void) {
-	if(ifAddSample != 1) {
+	if(ifAddSample != 1) {  // if flag not set, check which button is clicked
 		int but = buttonsGet();
 		if(val == but && val != prevVal ) {  // checking if our value did not changed and if it is different than previous value
 			prevVal = val;
@@ -78,8 +78,8 @@ void ifButtonClicked(void) {
 }
 
 int getButtonNumber(void) {
-	ifButtonClicked();  // 
-	if(ifAddSample) {  // 
+	ifButtonClicked();  // if button clicked, set the flag
+	if(ifAddSample) {
 		ifAddSample = 0;
 		return val;
 	}

@@ -1,11 +1,7 @@
 
 #include "tpm_pcm.h"
 
-#define UPSAMPLING 10
-
 void TPM0_IRQHandler(void);
-
-static uint8_t tpm0Enabled = 0;
 
 static uint16_t upSampleCNT = 0;
 static uint16_t sampleCNT = 0;
@@ -14,6 +10,10 @@ static uint8_t time;
 static uint8_t prevTime = 0;
 
 static uint8_t sample;
+static uint8_t volume = 255;
+
+static uint8_t upSampling;
+static uint8_t speed;
 
 void TPM0_Init(void) {
 		
@@ -46,8 +46,6 @@ void TPM0_Init(void) {
 
 	NVIC_ClearPendingIRQ(TPM0_IRQn); 
 	NVIC_EnableIRQ(TPM0_IRQn);	/* Enable Interrupts */
-	
-	tpm0Enabled = 1;  /* set local flag */
 }
 
 void TPM0_PCM_Play(void) {
@@ -59,12 +57,10 @@ void TPM0_PCM_Pause(void) {
 	playFlag = 0;
 }
 
-uint8_t getPlayFlag(void) {
-	return playFlag;
-}
-
 void TPM0_IRQHandler(void) {
 	if (playFlag) {
+		speed = setSpeed();
+		triggerADC();
 		time = getMusicTime();
 		if (upSampleCNT == 0) {
 			sampleCNT++;
@@ -136,9 +132,8 @@ void TPM0_IRQHandler(void) {
 					break;
 			}
 			
-			if (sample == 0) {}
-			else {
-				TPM0->CONTROLS[2].CnV = sample;
+			if (sample != 0) {
+				TPM0->CONTROLS[2].CnV = (volume /  255) * sample;
 			}
 		}
 		if (sampleCNT > 500) {
@@ -149,8 +144,9 @@ void TPM0_IRQHandler(void) {
 			if (getMusicTime() >= getSize()) resetMusicTime();
 			TPM0->CONTROLS[2].CnV = 0;
 		}
+		upSampling = speed/10;
 		// 40,96kHz / 10 ~ 4,1kHz ~ WAVE_RATE
-		if (++upSampleCNT > (UPSAMPLING-1)) upSampleCNT = 0;
+		if (++upSampleCNT > (upSampling - 1)) upSampleCNT = 0;
 	}
 	
 	TPM0->CONTROLS[0].CnSC |= TPM_CnSC_CHF_MASK;
