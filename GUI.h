@@ -17,6 +17,8 @@ void GUI_Play(void);
 
 void GUI_Pause(void);
 
+void GUI_Reset(void);
+
 void GUI_Config(void);
 
 void GUI_SetArray(void);

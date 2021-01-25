@@ -43,9 +43,16 @@ void GUI_Play(void) {
 void GUI_Pause(void) {
 	LCD1602_ClearAll();
 	LCD1602_SetCursor(0, 0);
-	LCD1602_Print("*Pause*");
+	LCD1602_Print("*Pause*  S2-Menu");
 	LCD1602_SetCursor(0, 1);
-	LCD1602_Print("S1-Play  S2-Menu");
+	LCD1602_Print("S1-Play S3-Reset");
+}
+
+void GUI_Reset(void) {
+	LCD1602_ClearAll();
+	LCD1602_SetCursor(0, 0);
+	LCD1602_Print("*Resetting*");
+	delay_ms(1500);
 }
 
 void GUI_Config(void) {

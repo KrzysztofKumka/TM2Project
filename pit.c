@@ -68,6 +68,11 @@ void PIT_IRQHandler(void) {
 				menu = 1;
 				GUI_Menu();
 			}
+			else if (button == 3) {
+				GUI_Reset();
+				musicReset();
+				GUI_Pause();
+			}
 		}
 		else if (config == 1) {
 			if (button == 1) {
