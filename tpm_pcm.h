@@ -5,7 +5,6 @@
 #include "frdm_bsp.h"
 #include "pmusic.h"
 #include "GUI.h"
-#include "ADC.h"
 
 void TPM0_Init(void);
 

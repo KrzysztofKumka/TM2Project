@@ -13,6 +13,8 @@ static uint8_t  playFlag = 0;
 static uint8_t time;
 static uint8_t prevTime = 0;
 
+static uint8_t sample;
+
 void TPM0_Init(void) {
 		
   SIM->SCGC6 |= SIM_SCGC6_TPM0_MASK;		
@@ -62,74 +64,81 @@ uint8_t getPlayFlag(void) {
 }
 
 void TPM0_IRQHandler(void) {
-	
 	if (playFlag) {
 		time = getMusicTime();
 		if (upSampleCNT == 0) {
 			sampleCNT++;
 			switch (getMusic(time)) {
 				
-				//No MUSIC
+				//NO MUSIC
 				case 0:
+					sample = 0;
 					break;
 				
-				//KICK SAMPLES 1, 2, 3
+				//PLAY/PAUSE
 				case 1:
-					TPM0->CONTROLS[2].CnV = kick1[sampleCNT];
+					sample = 0;
 					break;
+				
+				//KICK SAMPLES 2, 3
 				case 2:
-					TPM0->CONTROLS[2].CnV = kick2[sampleCNT];
+					sample = kick2[sampleCNT];
 					break;
 				case 3:
-					TPM0->CONTROLS[2].CnV = kick3[sampleCNT];
+					sample = kick3[sampleCNT];
 					break;
 				
 				//CLAP SAMPLES 4, 5, 6, 7
 				case 4:
-					TPM0->CONTROLS[2].CnV = clap1[sampleCNT];
+					sample = clap1[sampleCNT];
 					break;
 				case 5:
-					TPM0->CONTROLS[2].CnV = clap2[sampleCNT];
+					sample = clap2[sampleCNT];
 					break;
 				case 6:
-					TPM0->CONTROLS[2].CnV = clap3[sampleCNT];
+					sample = clap3[sampleCNT];
 					break;
 				case 7:
-					TPM0->CONTROLS[2].CnV = clap4[sampleCNT];
+					sample = clap4[sampleCNT];
 					break;
 				
 				//CYMBALS & HATS  SAMPLES 8, 9, 10
 				case 8:
-					TPM0->CONTROLS[2].CnV = openHihat1[sampleCNT];
+					sample = openHihat1[sampleCNT];
 					break;
 				case 9:
-					TPM0->CONTROLS[2].CnV = openHihat2[sampleCNT];
+					sample = openHihat2[sampleCNT];
 					break;
 				case 10:
-					TPM0->CONTROLS[2].CnV = crash1[sampleCNT];
+					sample = crash1[sampleCNT];
 					break;
 				
 				//TOM SAMPLES 11, 12
 				case 11:
-					TPM0->CONTROLS[2].CnV = tom1[sampleCNT];
+					sample = tom1[sampleCNT];
 					break;
 				case 12:
-					TPM0->CONTROLS[2].CnV = tom2[sampleCNT];
+					sample = tom2[sampleCNT];
 					break;
 				
 				// MUSICAL & FX & VOX SAMPLES 13, 14, 15, 16
 				case 13:
-					TPM0->CONTROLS[2].CnV = piano[sampleCNT];
+					sample = piano[sampleCNT];
 					break;
 				case 14:
-					TPM0->CONTROLS[2].CnV = brass[sampleCNT];
+					sample = brass[sampleCNT];
 					break;
 				case 15:
-					TPM0->CONTROLS[2].CnV = horn[sampleCNT];
+					sample = horn[sampleCNT];
 					break;
 				case 16:
-					TPM0->CONTROLS[2].CnV = boi[sampleCNT];
+					sample = boi[sampleCNT];
 					break;
+			}
+			
+			if (sample == 0) {}
+			else {
+				TPM0->CONTROLS[2].CnV = sample;
 			}
 		}
 		if (sampleCNT > 500) {

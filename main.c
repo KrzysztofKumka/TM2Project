@@ -6,7 +6,6 @@
 #include "pit.h"
 #include "lcd1602.h"
 #include "GUI.h"
-//#include "tsi.h"
 
 /* 
 Connections
@@ -38,17 +37,9 @@ SCL -> PTB3
 
 int main (void) { 
 	
-	uint8_t	kal_error;
-	
 	musicInit();  // initialize music array
 	
 	buttonsInit();  // initialize buttons
-	
-	kal_error=ADC_Init();				// initialize and calibrate ADC
-	if(kal_error)
-	{
-		while(1);									// calibration failed
-	}
 	
 	LCD1602_Init();  // initialize lcd display
 	LCD1602_Backlight(TRUE);  // turn on display backlight
