@@ -1,4 +1,4 @@
-# Projekt TM2 - Sekwencer muzyczny
+# Sekwencer muzyczny
 
 ### Opis projektu:
 
